@@ -1,4 +1,5 @@
 # NPM Packages
 node_modules
-# Babel
+# Parcel
 dist
+.parcel-cache
