@@ -1,16 +1,17 @@
+import {API_URL} from './config';
+import { getJSON } from './helpers';
+
 export const state = {
     recipe: {},
+    search: {
+        query: '',
+        results: []
+    },
 }
 
 export const loadRecipe = async function (id) {
     try {
-        // Fetching data from API 
-        const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`)
-        const data = await res.json()
-
-        // If response isn't okay throw some erros
-        if (!res.ok) throw new Error(`${data.message} (${res.status})`)
-        console.log(res, data);
+        const data = await getJSON(`${API_URL}${id}`);
 
         // State assigned to fetched data
         const { recipe } = data.data
@@ -26,6 +27,22 @@ export const loadRecipe = async function (id) {
         }
         console.log(state.recipe);
     } catch (e) {
-        alert(e)
+        throw e;
+    }
+}
+
+export const loadSearchResults = async function(query) {
+    try {
+        state.search.query = query;
+        const data = await getJSON(`${API_URL}?search=${query}`)
+        state.search.results = data.data.recipes.map(recipe => ({
+            id: recipe.id,
+            title: recipe.title,
+            publisher: recipe.publisher,
+            image: recipe.image_url,
+        }))
+    } catch (e) {
+        console.error(e);
+        throw e
     }
 }
