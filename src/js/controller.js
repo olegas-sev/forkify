@@ -21,6 +21,9 @@ const controlRecipes = async function () {
     // Guard clause if no id found from hash 
     if (!id) return;
 
+    // 0. Update results view to mark selected search result
+    resultsView.update(model.getSearchResultsPage())
+    
     // 1. Start loading the spinner when we fetch data 
     recipeView.renderLoader()
 
@@ -28,7 +31,7 @@ const controlRecipes = async function () {
     await model.loadRecipe(id);
 
     // 2. Rendering the recipe 
-    recipeView.render(model.state.recipe)
+    recipeView.render(model.state.recipe)  
 
   } catch (e) {
     recipeView.renderError();
@@ -65,11 +68,22 @@ const controlPagination = function (goToPage) {
 
 }
 
+const controlServings = function(newServings) {
+  // Update recipe servings
+  model.updateServings(newServings)
+
+  // Update UI
+  // recipeView.render(model.state.recipe)
+  recipeView.update(model.state.recipe)
+}
+
 // Subscriber
 const init = function () {
   recipeView.addHandlerRender(controlRecipes)
+  recipeView.addHandlerUpdateServings(controlServings)
   searchView.addHandlerSearch(controlSearchResults)
   paginationView.addHandlerClick(controlPagination)
+
 }
 
 init();

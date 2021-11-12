@@ -46,6 +46,8 @@ export const loadSearchResults = async function (query) {
                 image: recipe.image_url,
             };
         })
+        // New searc will reset current page to one
+        state.search.page = 1;
     } catch (e) {
         console.error(e);
         throw e
@@ -59,3 +61,11 @@ export const getSearchResultsPage = function (page = state.search.page) {
 
     return state.search.results.slice(start, end);
 }
+
+export const updateServings = function(newServings) {
+    state.recipe.ingredients.forEach(ing => {
+        ing.quantity = ing.quantity * newServings / state.recipe.servings;
+        // newQt = oldQt * servings / oldServings // 2 * 8 / 4 = 4
+    })
+    state.recipe.servings = newServings
+};
