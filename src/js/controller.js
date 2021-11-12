@@ -5,6 +5,7 @@ import * as model from "./model.js";
 import recipeView from "./views/recipeView.js";
 import searchView from "./views/searchView.js";
 import resultsView from "./views/resultsView.js";
+import bookmarksView from "./views/bookmarksView";
 import paginationView from "./views/paginationView.js";
 
 // Polyfilling
@@ -23,7 +24,8 @@ const controlRecipes = async function () {
 
     // 0. Update results view to mark selected search result
     resultsView.update(model.getSearchResultsPage())
-    
+    bookmarksView.update(model.state.bookmarks)
+
     // 1. Start loading the spinner when we fetch data 
     recipeView.renderLoader()
 
@@ -78,10 +80,15 @@ const controlServings = function(newServings) {
 }
 
 const controlAddBookmark = function() {
+  // Add/remove bookmark
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
-  
+
+  // Update view
   recipeView.update(model.state.recipe);
+
+  // Render bookmarks
+  bookmarksView.render(model.state.bookmarks)
 }
 
 // Subscriber
