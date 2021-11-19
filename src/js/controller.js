@@ -48,11 +48,11 @@ const controlRecipes = async function () {
 
 const controlSearchResults = async function () {
   try {
-    resultsView.renderLoader()
 
     // Get search query
     const query = searchView.getQuery();
     if (!query) return;
+    resultsView.renderLoader()
 
     // Load search results
     await model.loadSearchResults(query)
@@ -122,7 +122,7 @@ const controlAddRecipe = async function(newRecipe) {
 
     // Close form window
     setTimeout(function() {
-      addRecipeView.toggleWindow()
+      addRecipeView.closeWindow()
     }, MODAL_CLOSE_SECONDS * 1000)
 
   } catch (e) {
