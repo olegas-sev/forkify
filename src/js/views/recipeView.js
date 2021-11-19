@@ -5,6 +5,10 @@ import icons from 'url:../../img/icons.svg'
 import { Fraction } from 'fractional';
 
 class RecipeView extends View {
+  _parentElement = document.querySelector('.recipe');
+  _errorMessage = "We could not find that recipe. Please try another one!";
+  _message = "";
+
     // Publisher
     addHandlerRender(handler) {
       ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler))
@@ -81,7 +85,7 @@ class RecipeView extends View {
             <div class="recipe__ingredients">
               <h2 class="heading--2">Recipe ingredients</h2>
               <ul class="recipe__ingredient-list">
-                ${this._data.ingredients.map(this._generateMarkupIngredient).join('')}
+              ${this._data.ingredients.map(this._generateMarkupIngredient).join('')}
               </ul>
             </div>
 
@@ -111,7 +115,7 @@ class RecipeView extends View {
             <svg class="recipe__icon">
                 <use href="${icons}#icon-check"></use>
             </svg>
-            <div class="recipe__quantity">${ingredient.quantity ? new Fraction(ingredient.quantity).toString() : ''}</div>
+            <div class="recipe__quantity">${ingredient.quantity ? new Fraction(ingredient.quantity.toFixed(2)).toString() : ''}</div>
             <div class="recipe__description">
                 <span class="recipe__unit">${ingredient.unit}</span>
                 ${ingredient.description}
