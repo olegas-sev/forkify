@@ -3,3 +3,4 @@ node_modules
 # Parcel
 dist
 .parcel-cache
+.DS_Store
